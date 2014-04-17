@@ -2,6 +2,18 @@
 
 interface Apache_Solr_Compatibility_CompatibilityLayer
 {
+    /**
+     * Creates optional attributes for add command.
+     *
+     * @param boolean $allowDups Default false, guarantee the uniqueness of values.
+     * @param boolean $overwritePending Default is negation of allowDups.
+     * @param boolean $overwriteCommitted default is negation of allowDups.
+     * @param integer $commitWithin The number of milliseconds that a document must be committed within, see @{link http://wiki.apache.org/solr/UpdateXmlMessages#The_Update_Schema} for details.  If left empty this property will not be set in the request.
+     *
+     * @return string string with optional attributes
+     */
+    public function createAddAttributes($allowDups = false, $overwritePending = true, $overwriteCommitted = true, $commitWithin = 0);
+
 	/**
 	 * Creates a commit command XML string.
 	 *

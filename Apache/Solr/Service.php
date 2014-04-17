@@ -744,14 +744,14 @@ class Apache_Solr_Service
 	 */
 	public function addDocument(Apache_Solr_Document $document, $allowDups = false, $overwritePending = true, $overwriteCommitted = true, $commitWithin = 0)
 	{
-		$dupValue = $allowDups ? 'true' : 'false';
-		$pendingValue = $overwritePending ? 'true' : 'false';
-		$committedValue = $overwriteCommitted ? 'true' : 'false';
-		
-		$commitWithin = (int) $commitWithin;
-		$commitWithinString = $commitWithin > 0 ? " commitWithin=\"{$commitWithin}\"" : '';
-		
-		$rawPost = "<add allowDups=\"{$dupValue}\" overwritePending=\"{$pendingValue}\" overwriteCommitted=\"{$committedValue}\"{$commitWithinString}>";
+        $attributes = $this->getCompatibilityLayer()->createAddAttributes(
+            $allowDups,
+            $overwritePending,
+            $overwriteCommitted,
+            $commitWithin
+        );
+
+        $rawPost = "<add {$attributes}>";
 		$rawPost .= $this->_documentToXmlFragment($document);
 		$rawPost .= '</add>';
 
@@ -772,14 +772,14 @@ class Apache_Solr_Service
 	 */
 	public function addDocuments($documents, $allowDups = false, $overwritePending = true, $overwriteCommitted = true, $commitWithin = 0)
 	{
-		$dupValue = $allowDups ? 'true' : 'false';
-		$pendingValue = $overwritePending ? 'true' : 'false';
-		$committedValue = $overwriteCommitted ? 'true' : 'false';
+        $attributes = $this->getCompatibilityLayer()->createAddAttributes(
+            $allowDups,
+            $overwritePending,
+            $overwriteCommitted,
+            $commitWithin
+        );
 
-		$commitWithin = (int) $commitWithin;
-		$commitWithinString = $commitWithin > 0 ? " commitWithin=\"{$commitWithin}\"" : '';
-
-		$rawPost = "<add allowDups=\"{$dupValue}\" overwritePending=\"{$pendingValue}\" overwriteCommitted=\"{$committedValue}\"{$commitWithinString}>";
+        $rawPost = "<add {$attributes}>";
 
 		foreach ($documents as $document)
 		{
